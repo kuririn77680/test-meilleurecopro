@@ -55,7 +55,6 @@ class Statistics(APIView):
 class Advertisements(APIView):
     def post(self, request) -> Response:
         url = request.data.get("url", None)
-
         if url is None:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -80,4 +79,4 @@ class Advertisements(APIView):
             zipcode=data["postalCode"],
             condominium_fees=float(data["annualCondominiumFees"]),
         )
-        return Response(status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_200_OK)

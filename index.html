@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Test Meilleure Copro</title>
+</head>
+<body>
+
+<div id="add-advertisement">
+    <div id="add-advertisement-input">
+        <label for="input_url">Url BienIci:</label>
+        <input type="text" id="input_url" name="input_url" required size="120" />
+        <button type="button" onclick="post_advertisement()">ADD Advertisement</button>
+    </div>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+
+<div id="stats">
+    <div id="stats-input">
+        <select id="filter" name="filter">
+            <option value="city">City</option>
+            <option value="zipcode">Zipcode</option>
+            <option value="department">Department</option>
+        </select>
+        <input type="text" id="filter_content" name="filter_content" required size="60" />
+        <button type="button" onclick="get_stats()">Search</button>
+    </div>
+</div>
+
+</body>
+<script>
+    function get_stats() {
+        var filter = $("#filter").val();
+        var filter_content = $("#filter_content").val();
+
+
+        $.ajax({
+            url: "http://127.0.0.1:8000/statistics/?" + filter + "=" + filter_content,
+            type: "GET",
+            dataType: "json",
+            success: function(res) {
+                document.getElementById("stats-result").innerHTML = JSON.stringify(res);
+            }
+        });
+    }
+
+    function post_advertisement() {
+        var url = $("#input_url").val();
+
+        $.ajax({
+            url: "http://127.0.0.1:8000/advertisements/",
+            type: "POST",
+            data: {
+                url: url,
+            },
+            dataType: "json",
+            statusCode: {
+              200: function (response) {
+                 alert("advertisement added.");
+              },
+              400: function (response) {
+                 alert("Invalid request.");
+              },
+            },
+        });
+    }
+</script>
+</html>
